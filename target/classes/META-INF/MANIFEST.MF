@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: myjo_modle
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: hh
+Implementation-Vendor-Id: com.myjo
+Build-Jdk: 1.8.0_161
+Implementation-URL: http://projects.spring.io/spring-boot/myjo_modle/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
