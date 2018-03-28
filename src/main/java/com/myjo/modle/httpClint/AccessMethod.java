@@ -45,7 +45,7 @@ import com.myjo.modle.API.BaiDuAPI;
  *
  */
 @Service
-public class AccessMethodService {
+public class AccessMethod {
 
 	@Value("${tianma.nickName}")
 	private String nickName;
@@ -57,14 +57,7 @@ public class AccessMethodService {
 	private String remember;
 
 	private String[] finalCookie;
-
-	public void getData() {
-		System.out.println(nickName);
-		System.out.println(pwd);
-		System.out.println(remember);
-	}
-	 private static final Logger LOGGER = LoggerFactory.getLogger(AccessMethodService.class);
-
+	 private static final Logger LOGGER = LoggerFactory.getLogger(AccessMethod.class);
 	/**
 	 * 得到 (cookie+验证码图片)
 	 * @return
@@ -122,7 +115,6 @@ public class AccessMethodService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
 		return null;
 	}
@@ -146,8 +138,6 @@ public class AccessMethodService {
 		}
 		return vcode;
 	}
-	
-
 	/**
 	 * 登录
 	 */
