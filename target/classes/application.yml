@@ -17,17 +17,28 @@ spring:
            max-idle: 8
         # 连接超时时间（毫秒）
         timeout: 20
-#天马的信息配置
-tianma: 
-    #天马的用户名
-    name: 青岛麦巨商贸
-    #天马的密码
-    pwd: 0929mjmj
-    #天马的验证
-    remember: on
-    
+    http:
+      encoding: 
+        charset: UTF-8
+        enabled: 'true'
+        force: 'true'
+    messages:
+      encoding: UTF-8
 #百度API的接口调用的信息    
 baidu: 
    APP_ID: 10940680
    API_KEY: kczT5UXLcRsG8BUe03pFuTek
    SECRET_KEY: wdl08w51UTyV8kLElGypHBulBAZ4Dhnz
+jobs:
+  #下载csv的间隔时间
+  fixedDelay: '900000'
+#天马主要配置信息
+tianma:
+  #用户名信息
+  nickName: 青岛麦巨商贸
+  #密码
+  pwd: 8989mxmx
+  remember: 'on'
+  #天马下载的信息
+tianmaQuery: '[{"brand_name":"耐克","sex":"男,女,中,童","division":"鞋,服,配","quarter":"13,14,15,16,17,18","season":"q1,q2,q3,q4"},{"brand_name":"耐克小童","sex":"男,女,中,童","division":"鞋,服,配","quarter":"16,17,18","season":"q1,q2,q3,q4"},{"brand_name":"耐克护具","sex":"男,女,中,童","division":"鞋,服,配","quarter":"16,17,18","season":"q1,q2,q3,q4"}]'
+  

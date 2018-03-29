@@ -27,6 +27,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 /**
- * 下载天马导出的csv文件
+ * 下载天马导出的csv文件，并且操作csv文件
  */
 @Service
 @EnableScheduling
@@ -60,30 +62,24 @@ public class DownTianma {
 	 * 下载下的所有csv
 	 * 
 	 */
-	@Scheduled(fixedDelayString = "${jobs.fixedDelay}")
-	private void sendDownDataRequest() {
+	//@Scheduled(fixedDelayString = "${jobs.fixedDelay}")
+	@Test
+	public void sendDownDataRequest() {
 		LOGGER.info("正在发送请求并下载天马csv文件");
 		time = String.valueOf(System.currentTimeMillis());
 		JSONArray queryJson = new JSONArray(tianmaQuery);
-		// System.out.println(queryJson.toString());
+		System.out.println(queryJson.toString());
 
-		FileReader fr = null;
-		BufferedReader br = null;
 		CloseableHttpClient httpClient = null;
 		UrlEncodedFormEntity formEntity = null;
 		String result = null;
 		String totalStr = null;
-		String rootPath = System.getProperty("user.dir").replace("\\", "/");
-		String filePath = rootPath + "/cookie.txt";
-		System.out.println();
+
+		String[] jSessionId = getJSessionId();
+
 		try {
-			fr = new FileReader(filePath);
-			br = new BufferedReader(fr);
-			// 读取cookie.txt中的cookie信息
-			String cookies = br.readLine();
-			String[] cookie = cookies.split("=");
 			CookieStore cookieStore = new BasicCookieStore();
-			BasicClientCookie bcCookie = new BasicClientCookie(cookie[0], cookie[1]);
+			BasicClientCookie bcCookie = new BasicClientCookie(jSessionId[0], jSessionId[1]);
 			bcCookie.setVersion(0);
 			bcCookie.setDomain("www.tianmasport.com");
 			bcCookie.setPath("/ms");
@@ -135,12 +131,6 @@ public class DownTianma {
 						// 如果条数大于55000，则再次分类执行下载
 						for (int j = 0; j < sexs.length; j++) {
 							for (int k = 0; k < divisions.length; k++) {
-								// System.out.println(brand_name);
-								// System.out.println(sexs[j]);
-								// System.out.println(divisions[k]);
-								// System.out.println(quarters[m] +
-								// seasons[n]);
-
 								List<NameValuePair> form2 = new ArrayList<NameValuePair>();
 								form2.add(new BasicNameValuePair("brand_name", brand_name));
 								form2.add(new BasicNameValuePair("sex", sexs[j]));
@@ -188,8 +178,7 @@ public class DownTianma {
 		} finally {
 			try {
 				httpClient.close();
-				fr.close();
-				br.close();
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -198,9 +187,39 @@ public class DownTianma {
 		}
 
 	}
-
+	public String[] getJSessionId() {
+		FileReader fr = null;
+		BufferedReader br = null;
+		try {
+			String rootPath = System.getProperty("user.dir").replace("\\", "/");
+			String filePath = rootPath + "/cookie.txt";
+			fr = new FileReader(filePath);
+			br = new BufferedReader(fr);
+			// 读取cookie.txt中的cookie信息
+			String cookies = br.readLine();
+			String[] cookie = cookies.split("=");
+			return cookie;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				fr.close();
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 	/**
-	 * 下载天马csv
+	 * 
+	 * @param result		查出来的信息数
+	 * @param brand_name	nike品牌名
+	 * @param sex			性别
+	 * @param division		鞋服配
+	 * @param quarter		年份
+	 * @param season		季节
+	 * @param httpClient	
 	 */
 	private void downDataTianMa(String result, String brand_name, String sex, String division, String quarter,
 			String season, CloseableHttpClient httpClient) {
@@ -270,11 +289,6 @@ public class DownTianma {
 					for (int k = 0; k < divisions.length; k++) {
 						for (int m = 0; m < quarters.length; m++) {
 							for (int n = 0; n < seasons.length; n++) {
-								// System.out.println(brand_name);
-								// System.out.println(sexs[j]);
-								// System.out.println(divisions[k]);
-								// System.out.println(quarters[m] + seasons[n]);
-
 								csvFilePath = "E:/MYJOProject/inventoryIAndMerge/outfile/outCSV" + "_" + brand_name
 										+ "_" + sexs[j] + "_" + divisions[k] + "_" + quarters[m] + seasons[n] + "_"
 										+ time + ".csv";
@@ -282,10 +296,8 @@ public class DownTianma {
 								if (f.exists() != true) {
 									continue;
 								}
-
 								isr = new InputStreamReader(new FileInputStream(f), "GBK");
 								reader = new CsvReader(isr);
-
 								// 跳过表头 如果需要表头的话，这句可以忽略
 								reader.readHeaders();
 								// 逐行读入除表头的数据
@@ -320,7 +332,6 @@ public class DownTianma {
 				isr.close();
 				LOGGER.info("====================等待约15m=====================");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

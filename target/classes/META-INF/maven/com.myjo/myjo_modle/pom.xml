@@ -26,6 +26,12 @@
 		    <groupId>org.apache.httpcomponents</groupId>
 		    <artifactId>httpclient</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
+		<dependency>
+		    <groupId>com.mashape.unirest</groupId>
+		    <artifactId>unirest-java</artifactId>
+		    <version>1.4.9</version>
+		</dependency>
 		<!-- 使用jsoup进行数据解析 -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>
@@ -50,18 +56,17 @@
 		    <artifactId>opencsv</artifactId>
 		    <version>4.1</version>
 		</dependency>
+		<dependency>
+		    <groupId>net.sourceforge.javacsv</groupId>
+		    <artifactId>javacsv</artifactId>
+		    <version>2.0</version>
+		</dependency>
 		<!-- ========json数据解析:开始====== -->
 		<!--json -->
-		<dependency>
+<!-- 		<dependency>
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
-		</dependency>
-		<!-- fastjson -->
-		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>1.2.44</version>
-		</dependency>
+		</dependency> -->
 		<!-- ========json数据解析:结束====== -->
 		<!-- log4j-core -->
 		<dependency>
@@ -73,14 +78,6 @@
 		    <groupId>joda-time</groupId>
 		    <artifactId>joda-time</artifactId>
 		</dependency>
-		<!-- unirest-java 操作时间-->
-		<dependency>
-		    <groupId>com.mashape.unirest</groupId>
-		    <artifactId>unirest-java</artifactId>
-		    <version>1.4.9</version>
-		</dependency>
-		
-		
     </dependencies>
     <build>
         <plugins>
