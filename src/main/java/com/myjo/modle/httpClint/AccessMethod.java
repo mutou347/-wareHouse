@@ -89,7 +89,7 @@ public class AccessMethod {
 			// 生成图片
 			int width = 65;
 			int height = 30;
-			String path = "src/main/resources/valcode.jpg";
+			String path = "src/main/resources/valcodeImg/valcode.jpg";
 			System.out.println("图片路径:" + path);
 			File file = new File(path);
 			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -126,7 +126,8 @@ public class AccessMethod {
 		String vcode=null;
 		try {
 			AipOcr client = new AipOcr(BaiDuAPI.APP_ID, BaiDuAPI.API_KEY, BaiDuAPI.SECRET_KEY);
-			String path = "src/main/resources/valcode.jpg";
+			String path = "src/main/resources/valcodeImg/valcode.jpg";
+			System.out.println(path);
 			String image = path;
 			JSONObject res = client.basicAccurateGeneral(image, null);
 			JSONArray json = res.getJSONArray("words_result");
@@ -186,9 +187,8 @@ public class AccessMethod {
 			} else {
 				LOGGER.info("登录成功");
 				// 保存cookie到文件中
-				String rootPath = System.getProperty("user.dir").replace("\\", "/");
-				String filePath = rootPath + "/cookie.txt";
-				fw = new FileWriter(filePath);
+				String path = "src/main/resources/cookie.txt";
+				fw = new FileWriter(path);
 				fw.write(finalCookie[0] + "=" + finalCookie[1]);
 				fw.flush();
 			}
